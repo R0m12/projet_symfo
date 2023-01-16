@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manga Review{% endblock %}
+
+{% block body %}
+<style>
+</style>
+
+    <div>
+        <p> PTN </p>
+        {{dump(mangas)}}
+        {% for manga in mangas %}
+                <p> {{manga.nom}} </p>
+        {% endfor %}
+    </div>      
+{% endblock %}
