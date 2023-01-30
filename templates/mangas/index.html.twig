@@ -7,10 +7,24 @@
 </style>
 
     <div>
-        <p> PTN </p>
-        {{dump(mangas)}}
+        <tab>
+        <thead>
+            <tr>
+                <th> Nom </th>
+                <th> Genre </th>
+                <th> Type </th>
+                <th> Auteur </th>
+            </tr>
+        </thead>
+        <tbody>
         {% for manga in mangas %}
-                <p> {{manga.nom}} </p>
+            <tr>
+                <td> {{manga.nom}} </td>
+                <td> {{manga.genre}} </td>
+                <td> {{manga.type}} </td>
+                {{dump(manga)}}
+            </tr>
         {% endfor %}
+        </tbody>
     </div>      
 {% endblock %}
