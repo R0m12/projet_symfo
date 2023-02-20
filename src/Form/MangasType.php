@@ -12,8 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
@@ -25,7 +25,13 @@ class MangasType extends AbstractType
             ->add('nom', TextType::class)
             ->add('date_parution', DateType::class)
             ->add('nb_tomes', IntegerType::class)
-            ->add('statut', TextType::class)
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'En cours' => 0,
+                    'Terminé' => 1,
+                    'En pause' => 2,
+                ],
+            ])
             ->add('description', TextType::class)
             ->add('genre', TextType::class)
             ->add('type', TextType::class)
@@ -34,8 +40,7 @@ class MangasType extends AbstractType
                 'placeholder' => 'Auteur',
                 'required' => true,
                 ])
-            ->add('save', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

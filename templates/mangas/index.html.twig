@@ -4,26 +4,53 @@
 
 {% block body %}
 <style>
+    .header{
+        display: flex;
+        background-image: url("{{asset('blob-scene-haikei.png')}}");
+        height: 7rem;
+        align-items: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .header img{
+        width: 10rem;
+        height: 3.3rem;
+        margin-left: 1rem;
+    }
 </style>
 
-    <div>
-        <tab>
-        <thead>
-            <tr>
-                <th> Nom </th>
-                <th> Genre </th>
-                <th> Type </th>
-                <th> Auteur </th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for manga in mangas %}
-            <tr>
-                <td> {{manga.nom}} </td>
-                <td> {{manga.genre}} </td>
-                <td> {{manga.type}} </td>
-            </tr>
-        {% endfor %}
-        </tbody>
+<header>
+    <div class="header">
+        <img src="{{asset('image.png')}}">
+        <p> </p>
+    </div>
+</header>
+
+<hr>
+
+<body>
+    <div class="bg-white">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th> Nom </th>
+                    <th> Genre </th>
+                    <th> Type </th>
+                    <th> Auteur </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for manga in mangas %}
+                <tr>
+                    <td> {{manga.nom}} </td>
+                    <td> {{manga.genre}} </td>
+                    <td> {{manga.type}} </td>
+                    <td> {{manga.auteur_id.nom}} </td>  
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>      
+</body>
 {% endblock %}
