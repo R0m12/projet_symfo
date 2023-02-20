@@ -39,7 +39,7 @@ class Mangas
 
     #[ORM\ManyToOne(inversedBy: 'mangas')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Auteur $auteur_id = null;
+    public ?Auteur $auteur_id = null;
 
     #[ORM\OneToMany(mappedBy: 'manga_id', targetEntity: Commentaires::class)]
     private Collection $commentaires;

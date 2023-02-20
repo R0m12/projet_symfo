@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Mangas;
 use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
