@@ -18,5 +18,11 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     'app_mangas' => [[], ['_controller' => 'App\\Controller\\MangasController::index'], [], [['text', '/mangas']], [], [], []],
     'app_show' => [['id'], ['_controller' => 'App\\Controller\\MangasController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/mangas']], [], [], []],
-    'app_create' => [[], ['_controller' => 'App\\Controller\\MangasController::create'], [], [['text', '/create']], [], [], []],
+    'app_create_mangas' => [[], ['_controller' => 'App\\Controller\\MangasController::createManga'], [], [['text', '/create_mangas']], [], [], []],
+    'app_create_auteurs' => [[], ['_controller' => 'App\\Controller\\MangasController::createAuteur'], [], [['text', '/create_auteurs']], [], [], []],
+    'app_edit_mangas' => [['id'], ['_controller' => 'App\\Controller\\MangasController::editManga'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/edit_mangas']], [], [], []],
+    'app_edit_auteurs' => [['id'], ['_controller' => 'App\\Controller\\MangasController::editAuteur'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/edit_auteur']], [], [], []],
+    'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
+    'app_login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], [], []],
+    'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], [], []],
 ];

@@ -23,7 +23,9 @@ class MangasType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class)
-            ->add('date_parution', DateType::class)
+            ->add('date_parution', DateType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('nb_tomes', IntegerType::class)
             ->add('statut', ChoiceType::class, [
                 'choices' => [
@@ -33,14 +35,39 @@ class MangasType extends AbstractType
                 ],
             ])
             ->add('description', TextType::class)
-            ->add('genre', TextType::class)
-            ->add('type', TextType::class)
+            ->add('genre', ChoiceType::class, [
+                'choices' => [
+                    'Action' => 'Action',
+                    'Fantastique' => 'Fantastique',
+                    'Drame' => 'Drame',
+                    'Surnaturel' => 'Surnaturel',
+                    'Aventure' => 'Aventure',
+                    'Comedie' => 'Comedie',
+                    'Romance' => 'Romance',
+                    'Psychologique' => 'Psychologique',
+                    'Thriller' => 'Thiller',
+                    'Tragédie' => 'Tragédie',
+                    'Sport' => 'Sport',
+                    'TrancheDeVie' => 'Tranche de vie',
+                ]
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Shonen' => 'Shonen',
+                    'Seinen' => 'Seinen',
+                    'Josei' => 'Josei',
+                    'Yuri' => 'Yuri',
+                    'Shojo' => 'Shojo',
+                    'Yaoi' => 'Yaoi',
+                    'Kodomo' => 'Kodomo',
+                ]
+            ])
             ->add('auteur_id', EntityType::class, [
                 'class' => Auteur::class,
                 'placeholder' => 'Auteur',
                 'required' => true,
                 ])
-            ->add('save', SubmitType::class);
+            ->add('Ajouter', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

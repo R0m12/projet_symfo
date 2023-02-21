@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+        <script src="https://kit.fontawesome.com/0e010770cd.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{asset('blobz.css')}}">
     </head>
     <body>
         {% block body %}{% endblock %}

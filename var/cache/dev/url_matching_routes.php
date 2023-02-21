@@ -15,7 +15,11 @@ return [
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/mangas' => [[['_route' => 'app_mangas', '_controller' => 'App\\Controller\\MangasController::index'], null, null, null, false, false, null]],
-        '/create' => [[['_route' => 'app_create', '_controller' => 'App\\Controller\\MangasController::create'], null, null, null, false, false, null]],
+        '/create_mangas' => [[['_route' => 'app_create_mangas', '_controller' => 'App\\Controller\\MangasController::createManga'], null, null, null, false, false, null]],
+        '/create_auteurs' => [[['_route' => 'app_create_auteurs', '_controller' => 'App\\Controller\\MangasController::createAuteur'], null, null, null, false, false, null]],
+        '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
+        '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
+        '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -35,6 +39,10 @@ return [
                     .')'
                 .')'
                 .'|/mangas/([^/]++)(*:185)'
+                .'|/edit_(?'
+                    .'|mangas/([^/]++)(*:217)'
+                    .'|auteur/([^/]++)(*:240)'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -45,8 +53,10 @@ return [
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        185 => [
-            [['_route' => 'app_show', '_controller' => 'App\\Controller\\MangasController::show'], ['id'], null, null, false, true, null],
+        185 => [[['_route' => 'app_show', '_controller' => 'App\\Controller\\MangasController::show'], ['id'], null, null, false, true, null]],
+        217 => [[['_route' => 'app_edit_mangas', '_controller' => 'App\\Controller\\MangasController::editManga'], ['id'], null, null, false, true, null]],
+        240 => [
+            [['_route' => 'app_edit_auteurs', '_controller' => 'App\\Controller\\MangasController::editAuteur'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

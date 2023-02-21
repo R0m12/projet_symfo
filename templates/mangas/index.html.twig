@@ -4,13 +4,8 @@
 
 {% block body %}
 <style>
-    .header{
-        display: flex;
-        background-image: url("{{asset('blob-scene-haikei.png')}}");
-        height: 7rem;
-        align-items: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+    nav a {
+        margin-left: 25px;
     }
 
     .header img{
@@ -18,16 +13,22 @@
         height: 3.3rem;
         margin-left: 1rem;
     }
+
+    .bg-white{
+        margin: 2rem;
+        border-radius: 7px;
+    }
+
+    table th, td {
+        text-align: center;
+    }
 </style>
 
-<header>
-    <div class="header">
-        <img src="{{asset('image.png')}}">
-        <p> </p>
-    </div>
-</header>
-
-<hr>
+<nav class="navbar navbar-light bg-dark">
+  <a class="navbar-brand" href="#">
+    <img src="{{asset('image.png')}}" width="120" height="30" alt="">
+  </a>
+</nav>
 
 <body>
     <div class="bg-white">
@@ -38,6 +39,7 @@
                     <th> Genre </th>
                     <th> Type </th>
                     <th> Auteur </th>
+                    <th> Actions </th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +49,7 @@
                     <td> {{manga.genre}} </td>
                     <td> {{manga.type}} </td>
                     <td> {{manga.auteur_id.nom}} </td>  
+                    <td> <a href="{{path('app_edit_mangas', {id: manga.id})}}"> <button type="button" class="btn btn-primary"> <i class="fa-solid fa-pen-to-square"></i> </button> </a> </td>
                 </tr>
             {% endfor %}
             </tbody>

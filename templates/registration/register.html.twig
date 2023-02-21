@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+    <style> 
+        html body{
+            overflow: hidden;
+        }
+
+        .container{
+            width: 33%;
+            border-radius: 10px;
+            position: absolute;
+            top: 10%;
+            left: 33%;
+        }
+
+        .container img{
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        form{
+            margin: 2rem;
+            line-height: 2rem;
+        }
+
+        form p {
+            height: 0.4rem;
+        }
+
+        .row{
+            display: flex;
+            justify-content: center;
+        }
+
+        .row button{
+            margin-top: 2rem;
+            width: 33%;
+        }
+    </style>
+
+    <div class="tk-blob" style="--time: 30s; --amount: 5;--fill: #34495e; width: 45rem; left: -15rem; top: -20rem; position: absolute;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 317.5 353.7">
+            <path d="M291.8 55.3c30.4 39.9 30.7 102 17 160.4-13.8 58.3-41.6 112.9-84 130.9s-99.3-.6-137-30C50.2 287.1 32 246.9 17 200.5 2.1 154.1-9.6 101.4 11.5 63.6 32.6 25.8 86.6 2.8 143.8.2c57.2-2.6 117.6 15.2 148 55.1z"></path>
+        </svg>
+    </div>
+
+    <div class="tk-blob" style="--time: 15s; --amount: 2;--fill: #cb4335; width: 38rem; right: -7rem; bottom: -10rem; position: absolute;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320.6 343.9">
+            <path d="M275.9 63.1c30.7 37.3 50.9 84.2 43 126.9-7.9 42.7-44.1 81.2-93 112.1C177 332.9 115.2 356 70.9 337 26.5 317.9-.4 256.7 0 204.6c.4-52 28-95 59.7-132.5C91.4 34.5 127.1 2.3 165.5.1c38.5-2.2 79.7 25.7 110.4 63z"></path>
+        </svg>
+    </div>
+
+    <div class="container bg-white">
+        <img src="{{asset('imageBlack.png')}}"/>
+        {{ form_start(registrationForm) }}
+            <div class="row">
+                {{ form_row(registrationForm.email) }}
+            </div>
+            <p> &nbsp </p>
+            <div class="row">
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+            </div>
+            {{ form_row(registrationForm.agreeTerms) }}
+            <p> &nbsp </p>
+            <div class="row">
+                <button type="submit" class="btn btn-primary"> S'inscrire </button>
+            </div>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
