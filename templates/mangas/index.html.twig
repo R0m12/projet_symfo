@@ -4,56 +4,81 @@
 
 {% block body %}
 <style>
-    nav a {
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-brand {
         margin-left: 25px;
     }
 
-    .header img{
+    .navbar-logout {
+        margin-right: 25px;
+    }
+
+    .header img {
         width: 10rem;
         height: 3.3rem;
         margin-left: 1rem;
     }
 
-    .bg-white{
-        margin: 2rem;
-        border-radius: 7px;
+    .container {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        justify-content: center;
     }
 
     table th, td {
         text-align: center;
     }
+
+    .card {
+        width: 16rem;
+        height: 24rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-img-top { 
+        height: 14rem;
+        width: 100%;
+    }
+
+    .card-title {
+        font-family: 'Righteous';
+    }
+
+    .card-body h5{
+        font-style: italic;
+        text-align: center;
+        font-family: 'Poiret One';
+    }
 </style>
 
 <nav class="navbar navbar-light bg-dark">
-  <a class="navbar-brand" href="#">
-    <img src="{{asset('image.png')}}" width="120" height="30" alt="">
-  </a>
+    <a class="navbar-brand" href="#">
+        <img src="{{asset('image.png')}}" width="120" height="30" alt="">
+    </a>
+    <a class="navbar-logout" href="{{path('app_logout')}}"> 
+        <button class="btn btn-secondary btn-sm" type="button"> Se déconnecter </button> 
+    </a>
 </nav>
 
 <body>
-    <div class="bg-white">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th> Nom </th>
-                    <th> Genre </th>
-                    <th> Type </th>
-                    <th> Auteur </th>
-                    <th> Actions </th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for manga in mangas %}
-                <tr>
-                    <td> {{manga.nom}} </td>
-                    <td> {{manga.genre}} </td>
-                    <td> {{manga.type}} </td>
-                    <td> {{manga.auteur_id.nom}} </td>  
-                    <td> <a href="{{path('app_edit_mangas', {id: manga.id})}}"> <button type="button" class="btn btn-primary"> <i class="fa-solid fa-pen-to-square"></i> </button> </a> </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="container">
+        {% for manga in mangas %}
+            <div class="card">
+                <img src="{{asset('uploads/images/'~manga.image)}}" class="card-img-top"/>
+                <div class="card-body">
+                    <h3 class="card-title"> {{manga.nom}} </h5>
+                    <h5 class="card-body"> {{manga.auteur_id.nom}} {{manga.auteur_id.prenom}} </h5>
+                </div>
+            </div>
+        {% endfor %}
     </div>      
 </body>
 {% endblock %}

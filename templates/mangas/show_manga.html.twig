@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manga Review{% endblock %}
+
+{% block body %}
+
+<style>
+
+    html, body {
+        height: 80%;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-brand {
+        margin-left: 25px;
+    }
+
+    .navbar-logout {
+        margin-right: 25px;
+    }
+
+    .illu {
+        position: absolute;
+        margin-top: 2rem;
+        margin-left: 4rem;
+        border-radius: 3px;
+        width: 300px;
+        height: 400px;
+        object-fit: contain;
+    }
+
+    .bg-white {
+        padding-top: 3rem;
+        padding-left: 25rem;
+        height: 10rem;
+    }
+
+    .title {
+        font-family: 'Righteous';
+    }
+
+    .content {
+        padding-top: 1.5rem;
+        padding-left: 25rem;
+        padding-right: 2rem;
+    }
+
+    .lead {
+        font-family: 'Poiret One';
+    }
+
+    .content h4 {
+        font-family: 'Righteous';
+    }
+
+    .text-muted {
+        font-family: 'Macondo';
+    }
+
+    .information {
+        padding-top: 1rem;
+        display: flex;
+        justify-content: space-around;
+        font-family: 'Macondo';
+        font-size: 22px;
+    }
+
+    .information span {
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    .reviews {
+        margin-top: 2.5rem;
+        padding-left: 2.5rem;
+        background-color: white;
+        min-height: 100%;
+    }
+
+    .reviews h4 {
+        padding-top: 1rem;
+        font-family: 'Righteous';
+    }
+
+</style>
+
+<nav class="navbar navbar-light bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="{{asset('image.png')}}" width="120" height="30" alt="">
+    </a>
+    <a class="navbar-logout" href="{{path('app_logout')}}"> 
+        <button class="btn btn-secondary btn-sm" type="button"> Se déconnecter </button> 
+    </a>
+</nav>
+
+<img src="{{asset('uploads/images/'~manga.image)}}" class="illu"/>
+<div class="bg-white">
+    <h2 class="title"> {{manga.nom}} </h2>
+    <p class="lead"> {{manga.auteur_id.nom}} {{manga.auteur_id.prenom}} </p>
+</div>
+<div class="content">
+    <h4> Description: </h4>
+    <p class="text-muted"> {{manga.description}}. </p>
+    <hr>
+    <div class="information"> 
+        <div class="genre">
+            <p> Genre : <span class="text-muted"> {{manga.genre}} </span> </p>
+        </div>
+        <div class="type">
+            <p> Type : <span class="text-muted"> {{manga.type}} </span> </p>
+        </div>
+        <div class="parution">
+            <p> Date de parution : <span class="text-muted"> {{manga.dateParution|date('d/m/Y')}} </span> </p>
+        </div>
+    </div>
+    <div class="information"> 
+        <div class="tomes">
+            <p> Nombre de tomes : <span class="text-muted"> {{manga.nbTomes}} </span> </p>
+        </div>
+        <div class="statut">
+            {% if manga.statut == 0 %}
+                <p> Statut : <span class="text-muted"> En cours </span> </p>
+            {% elseif manga.statut == 1 %}
+                <p> Statut : <span class="text-muted"> Terminé </span> </p>
+            {% elseif manga.statut == 2 %}
+                <p> Statut : <span class="text-muted"> En pause </span> </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="reviews">
+    <h4> Reviews </h4>
+</div>
+
+{% endblock %}

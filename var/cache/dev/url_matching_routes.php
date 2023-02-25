@@ -40,9 +40,10 @@ return [
                 .')'
                 .'|/mangas/([^/]++)(*:185)'
                 .'|/edit_(?'
-                    .'|mangas/([^/]++)(*:217)'
-                    .'|auteur/([^/]++)(*:240)'
+                    .'|manga/([^/]++)(*:216)'
+                    .'|auteur/([^/]++)(*:239)'
                 .')'
+                .'|/show/([^/]++)(*:262)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -54,9 +55,10 @@ return [
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         185 => [[['_route' => 'app_show', '_controller' => 'App\\Controller\\MangasController::show'], ['id'], null, null, false, true, null]],
-        217 => [[['_route' => 'app_edit_mangas', '_controller' => 'App\\Controller\\MangasController::editManga'], ['id'], null, null, false, true, null]],
-        240 => [
-            [['_route' => 'app_edit_auteurs', '_controller' => 'App\\Controller\\MangasController::editAuteur'], ['id'], null, null, false, true, null],
+        216 => [[['_route' => 'app_edit_mangas', '_controller' => 'App\\Controller\\MangasController::editManga'], ['id'], null, null, false, true, null]],
+        239 => [[['_route' => 'app_edit_auteurs', '_controller' => 'App\\Controller\\MangasController::editAuteur'], ['id'], null, null, false, true, null]],
+        262 => [
+            [['_route' => 'show_manga', '_controller' => 'App\\Controller\\MangasController::showManga'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

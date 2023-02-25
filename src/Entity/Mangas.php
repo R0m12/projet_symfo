@@ -44,6 +44,9 @@ class Mangas
     #[ORM\OneToMany(mappedBy: 'manga_id', targetEntity: Commentaires::class)]
     private Collection $commentaires;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -176,6 +179,18 @@ class Mangas
                 $commentaire->setMangaId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

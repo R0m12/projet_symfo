@@ -74,6 +74,7 @@
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
+    <parameter key="brochures_directory">C:\Users\romai\Desktop\projet_symfo/public/uploads/images</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -5438,6 +5439,7 @@
       <argument type="collection">
         <argument key="main" type="collection">
           <argument type="service" id="App\Security\AppCustomAuthenticator"/>
+          <argument type="service" id="security.authenticator.form_login.main"/>
         </argument>
       </argument>
       <argument>false</argument>
@@ -5485,10 +5487,11 @@
       <argument>false</argument>
       <argument>security.user.provider.concrete.app_user_provider</argument>
       <argument>main</argument>
-      <argument>App\Security\AppCustomAuthenticator</argument>
+      <argument>security.authenticator.form_login.main</argument>
       <argument>null</argument>
       <argument>null</argument>
       <argument type="collection">
+        <argument>form_login</argument>
         <argument>App\Security\AppCustomAuthenticator</argument>
       </argument>
       <argument>null</argument>
@@ -5621,15 +5624,66 @@
     <service id="security.logout.listener.default.main" class="Symfony\Component\Security\Http\EventListener\DefaultLogoutListener">
       <tag name="kernel.event_subscriber" dispatcher="security.event_dispatcher.main"/>
       <argument type="service" id="security.http_utils"/>
-      <argument>/</argument>
+      <argument>app_login</argument>
     </service>
     <service id="security.logout.listener.session.main" class="Symfony\Component\Security\Http\EventListener\SessionLogoutListener">
       <tag name="kernel.event_subscriber" dispatcher="security.event_dispatcher.main"/>
+    </service>
+    <service id="security.authenticator.form_login.main" class="Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator">
+      <argument type="service" id="security.http_utils"/>
+      <argument type="service" id="security.user.provider.concrete.app_user_provider"/>
+      <argument type="service" id="security.authentication.success_handler.main.form_login"/>
+      <argument type="service" id="security.authentication.failure_handler.main.form_login"/>
+      <argument type="collection">
+        <argument key="login_path">app_login</argument>
+        <argument key="check_path">app_login</argument>
+        <argument key="use_forward">false</argument>
+        <argument key="require_previous_session">false</argument>
+        <argument key="username_parameter">_username</argument>
+        <argument key="password_parameter">_password</argument>
+        <argument key="csrf_parameter">_csrf_token</argument>
+        <argument key="csrf_token_id">authenticate</argument>
+        <argument key="enable_csrf">false</argument>
+        <argument key="post_only">true</argument>
+        <argument key="form_only">false</argument>
+      </argument>
+    </service>
+    <service id="security.authentication.success_handler.main.form_login" class="Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler">
+      <argument type="service" id="security.http_utils"/>
+      <argument type="collection"/>
+      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <call method="setOptions">
+        <argument type="collection">
+          <argument key="login_path">app_login</argument>
+          <argument key="always_use_default_target_path">false</argument>
+          <argument key="default_target_path">/</argument>
+          <argument key="target_path_parameter">_target_path</argument>
+          <argument key="use_referer">false</argument>
+        </argument>
+      </call>
+      <call method="setFirewallName">
+        <argument>main</argument>
+      </call>
+    </service>
+    <service id="security.authentication.failure_handler.main.form_login" class="Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler">
+      <argument type="service" id="http_kernel"/>
+      <argument type="service" id="security.http_utils"/>
+      <argument type="collection"/>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <call method="setOptions">
+        <argument type="collection">
+          <argument key="login_path">app_login</argument>
+          <argument key="failure_path">null</argument>
+          <argument key="failure_forward">false</argument>
+          <argument key="failure_path_parameter">_failure_path</argument>
+        </argument>
+      </call>
     </service>
     <service id="security.authenticator.manager.main" class="Symfony\Component\Security\Http\Authentication\AuthenticatorManager">
       <tag name="monolog.logger" channel="security"/>
       <argument type="collection">
         <argument type="service" id="App\Security\AppCustomAuthenticator"/>
+        <argument type="service" id="security.authenticator.form_login.main"/>
       </argument>
       <argument type="service" id="security.token_storage"/>
       <argument type="service" id="security.event_dispatcher.main"/>
@@ -5651,7 +5705,7 @@
       <argument type="service" id="security.authentication.trust_resolver"/>
       <argument type="service" id="security.http_utils"/>
       <argument>main</argument>
-      <argument type="service" id="App\Security\AppCustomAuthenticator"/>
+      <argument type="service" id="security.authenticator.form_login.main"/>
       <argument>null</argument>
       <argument>null</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
@@ -6429,11 +6483,19 @@
         <argument key="doctrine" type="service_closure" id="doctrine"/>
       </argument>
     </service>
-    <service id=".service_locator.g4jPZEl" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.aUsFPsv" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="doctrine" type="service_closure" id="doctrine"/>
-        <argument key="manga" type="service_closure" id=".errored..service_locator.g4jPZEl.App\Entity\Mangas"/>
+        <argument key="slugger" type="service_closure" id="slugger"/>
+      </argument>
+    </service>
+    <service id=".service_locator.pmIQPPt" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="doctrine" type="service_closure" id="doctrine"/>
+        <argument key="manga" type="service_closure" id=".errored..service_locator.pmIQPPt.App\Entity\Mangas"/>
+        <argument key="slugger" type="service_closure" id="slugger"/>
       </argument>
     </service>
     <service id=".service_locator.y6TXluv" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -6441,6 +6503,13 @@
       <argument type="collection">
         <argument key="auteur" type="service_closure" id=".errored..service_locator.y6TXluv.App\Entity\Auteur"/>
         <argument key="doctrine" type="service_closure" id="doctrine"/>
+      </argument>
+    </service>
+    <service id=".service_locator.g4jPZEl" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="doctrine" type="service_closure" id="doctrine"/>
+        <argument key="manga" type="service_closure" id=".errored..service_locator.g4jPZEl.App\Entity\Mangas"/>
       </argument>
     </service>
     <service id=".service_locator.iQAD6w2" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -6458,15 +6527,16 @@
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.FEYYVR5" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator._ATSSLa" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\MangasController::createAuteur" type="service_closure" id=".service_locator.GQZbvNR"/>
-        <argument key="App\Controller\MangasController::createManga" type="service_closure" id=".service_locator.GQZbvNR"/>
+        <argument key="App\Controller\MangasController::createManga" type="service_closure" id=".service_locator.aUsFPsv"/>
         <argument key="App\Controller\MangasController::editAuteur" type="service_closure" id=".service_locator.y6TXluv"/>
-        <argument key="App\Controller\MangasController::editManga" type="service_closure" id=".service_locator.g4jPZEl"/>
+        <argument key="App\Controller\MangasController::editManga" type="service_closure" id=".service_locator.pmIQPPt"/>
         <argument key="App\Controller\MangasController::index" type="service_closure" id=".service_locator.GQZbvNR"/>
         <argument key="App\Controller\MangasController::show" type="service_closure" id=".service_locator.GQZbvNR"/>
+        <argument key="App\Controller\MangasController::showManga" type="service_closure" id=".service_locator.g4jPZEl"/>
         <argument key="App\Controller\RegistrationController::register" type="service_closure" id=".service_locator.iQAD6w2"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.zFcJjKU"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -6474,11 +6544,12 @@
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="App\Controller\MangasController:createAuteur" type="service_closure" id=".service_locator.GQZbvNR"/>
-        <argument key="App\Controller\MangasController:createManga" type="service_closure" id=".service_locator.GQZbvNR"/>
+        <argument key="App\Controller\MangasController:createManga" type="service_closure" id=".service_locator.aUsFPsv"/>
         <argument key="App\Controller\MangasController:editAuteur" type="service_closure" id=".service_locator.y6TXluv"/>
-        <argument key="App\Controller\MangasController:editManga" type="service_closure" id=".service_locator.g4jPZEl"/>
+        <argument key="App\Controller\MangasController:editManga" type="service_closure" id=".service_locator.pmIQPPt"/>
         <argument key="App\Controller\MangasController:index" type="service_closure" id=".service_locator.GQZbvNR"/>
         <argument key="App\Controller\MangasController:show" type="service_closure" id=".service_locator.GQZbvNR"/>
+        <argument key="App\Controller\MangasController:showManga" type="service_closure" id=".service_locator.g4jPZEl"/>
         <argument key="App\Controller\RegistrationController:register" type="service_closure" id=".service_locator.iQAD6w2"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.zFcJjKU"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -7294,12 +7365,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.FEYYVR5"/>
+      <argument type="service" id=".service_locator._ATSSLa"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.FEYYVR5"/>
+      <argument type="service" id=".service_locator._ATSSLa"/>
     </service>
     <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
       <argument type="iterator">
@@ -7319,8 +7390,9 @@
       </call>
     </service>
     <service id=".errored..service_locator.xUrKPVU.Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface"/>
-    <service id=".errored..service_locator.g4jPZEl.App\Entity\Mangas" class="App\Entity\Mangas"/>
+    <service id=".errored..service_locator.pmIQPPt.App\Entity\Mangas" class="App\Entity\Mangas"/>
     <service id=".errored..service_locator.y6TXluv.App\Entity\Auteur" class="App\Entity\Auteur"/>
+    <service id=".errored..service_locator.g4jPZEl.App\Entity\Mangas" class="App\Entity\Mangas"/>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
       <argument type="collection"/>
@@ -8244,7 +8316,7 @@
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface" alias="webpack_encore.entrypoint_lookup[_default]"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.FEYYVR5"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator._ATSSLa"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -8266,9 +8338,10 @@
     <service id=".service_locator.h8Jkkd2" alias="messenger.retry_strategy_locator"/>
     <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~_rA1Xah"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
+    <service id=".service_locator.UysGa26" alias=".service_locator.pmIQPPt"/>
     <service id=".service_locator.ARxym2I" alias=".service_locator.g4jPZEl"/>
     <service id=".service_locator.x__eXbe" alias=".service_locator.iQAD6w2"/>
-    <service id=".service_locator.cUAS7Ij" alias=".service_locator.FEYYVR5"/>
+    <service id=".service_locator.fWseorh" alias=".service_locator._ATSSLa"/>
     <service id=".service_locator.wKF4yn1" alias=".service_locator.19_mNxd"/>
     <service id=".service_locator.aDhYuoq" alias=".service_locator.a92GbA_"/>
     <service id=".service_locator.XW18Svm" alias=".service_locator.TcKhdzh"/>
@@ -8319,8 +8392,10 @@
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.uo5c0SP" alias=".service_locator.xUrKPVU"/>
     <service id=".service_locator.FPFiL9q" alias=".service_locator.GQZbvNR"/>
-    <service id=".service_locator.m9Au2MI" alias=".service_locator.g4jPZEl"/>
+    <service id=".service_locator.rAIUoH_" alias=".service_locator.aUsFPsv"/>
+    <service id=".service_locator.46SdgYg" alias=".service_locator.pmIQPPt"/>
     <service id=".service_locator.U0WWOEe" alias=".service_locator.y6TXluv"/>
+    <service id=".service_locator.m9Au2MI" alias=".service_locator.g4jPZEl"/>
     <service id=".service_locator.yhWEeZ1" alias=".service_locator.iQAD6w2"/>
     <service id=".service_locator.URfgn8g" alias=".service_locator.zFcJjKU"/>
     <service id=".service_locator.eAaUVIw" alias=".service_locator.jIxfAsi"/>

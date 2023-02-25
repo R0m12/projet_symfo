@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MangasController extends AbstractController
 {
@@ -37,7 +40,7 @@ class MangasController extends AbstractController
     }
 
     #[Route('/create_mangas', name: 'app_create_mangas')]
-    public function createManga(Request $request, ManagerRegistry $doctrine): Response
+    public function createManga(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
     {
         $auteurs = $doctrine->getRepository(Auteur::class)->findAll();
         $form = $this->createForm(MangasType::class);
@@ -49,24 +52,46 @@ class MangasController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $manager = $doctrine->getManager();
 
-            $data = $form->getData();
+            $image = $form->get('image')->getData();
 
-            $manga->setNom($data->getNom());
-            $manga->setDateParution($data->getDateParution());
-            $manga->setNbTomes($data->getNbTomes());
-            $manga->setStatut($data->getStatut());
-            $manga->setDescription($data->getDescription());
-            $manga->setGenre($data->getGenre());
-            $manga->setType($data->getType());
-            $manga->setAuteurId($data->getAuteurId());
-            
-            $manager->persist($manga);
-            $manager->flush();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
 
-            return $this->redirectToRoute('app_mangas');
+                // Move the file to the directory where brochures are stored
+                try {
+                    $image->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $data = $form->getData();
+
+                $manga->setNom($data->getNom());
+                $manga->setDateParution($data->getDateParution());
+                $manga->setNbTomes($data->getNbTomes());
+                $manga->setStatut($data->getStatut());
+                $manga->setDescription($data->getDescription());
+                $manga->setGenre($data->getGenre());
+                $manga->setType($data->getType());
+                $manga->setAuteurId($data->getAuteurId());
+                $manga->setImage($data->getImage());
+                
+                
+                $manager->persist($manga);
+                $manager->flush();
+    
+                return $this->redirectToRoute('app_mangas');
+            }
+
         }
         
-        return $this->render('mangas/create_mangas.html.twig', [
+        return $this->render('mangas/create_manga.html.twig', [
             'auteurs' => $auteurs,
             'form' => $form->createView(),
         ]);
@@ -97,14 +122,14 @@ class MangasController extends AbstractController
             return $this->redirectToRoute('app_mangas');
         }
         
-        return $this->render('mangas/create_auteurs.html.twig', [
+        return $this->render('mangas/create_auteur.html.twig', [
             'auteurs' => $auteurs,
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/edit_mangas/{id}', name: 'app_edit_mangas')]
-    public function editManga(Mangas $manga, Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/edit_manga/{id}', name: 'app_edit_mangas')]
+    public function editManga(Mangas $manga, Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
     {
         $auteurs = $doctrine->getRepository(Auteur::class)->findAll();
         $form = $this->createForm(MangasType::class, $manga);
@@ -114,24 +139,46 @@ class MangasController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $manager = $doctrine->getManager();
 
-            $data = $form->getData();
+            $image = $form->get('image')->getData();
 
-            $manga->setNom($data->getNom());
-            $manga->setDateParution($data->getDateParution());
-            $manga->setNbTomes($data->getNbTomes());
-            $manga->setStatut($data->getStatut());
-            $manga->setDescription($data->getDescription());
-            $manga->setGenre($data->getGenre());
-            $manga->setType($data->getType());
-            $manga->setAuteurId($data->getAuteurId());
-            
-            $manager->persist($manga);
-            $manager->flush();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
 
-            return $this->redirectToRoute('app_mangas');
+                // Move the file to the directory where brochures are stored
+                try {
+                    $image->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $data = $form->getData();
+
+                $manga->setNom($data->getNom());
+                $manga->setDateParution($data->getDateParution());
+                $manga->setNbTomes($data->getNbTomes());
+                $manga->setStatut($data->getStatut());
+                $manga->setDescription($data->getDescription());
+                $manga->setGenre($data->getGenre());
+                $manga->setType($data->getType());
+                $manga->setAuteurId($data->getAuteurId());
+                $manga->setImage($newFilename);
+                
+                
+                $manager->persist($manga);
+                $manager->flush();
+    
+                return $this->redirectToRoute('app_mangas');
+            }
+
         }
         
-        return $this->render('mangas/edit_mangas.html.twig', [
+        return $this->render('mangas/edit_manga.html.twig', [
             'auteurs' => $auteurs,
             'form' => $form->createView(),
         ]);
@@ -160,9 +207,17 @@ class MangasController extends AbstractController
             return $this->redirectToRoute('app_mangas');
         }
         
-        return $this->render('mangas/edit_mangas.html.twig', [
+        return $this->render('mangas/edit_auteur.html.twig', [
             'auteurs' => $auteurs,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/show/{id}', name: 'show_manga')]
+    public function showManga(Mangas $manga, Request $request, ManagerRegistry $doctrine): Response
+    {
+        return $this->render('mangas/show_manga.html.twig', [
+            'manga' => $manga,
         ]);
     }
 }
