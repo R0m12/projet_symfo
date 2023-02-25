@@ -10,8 +10,10 @@ use App\Entity\Mangas;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -67,7 +69,22 @@ class MangasType extends AbstractType
                 'placeholder' => 'Auteur',
                 'required' => true,
                 ])
-            ->add('Ajouter', SubmitType::class);
+            ->add('image', FileType::class, [
+                'label' => 'Image (jpg/jpeg/png)',
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpg', 
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Le format n\'est pas correcte, veuillez selectionner une image valide.'
+                    ])
+                ]
+            ])
+            ->add('Soumettre', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
