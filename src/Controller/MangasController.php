@@ -4,16 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Auteur;
 use App\Entity\Mangas;
+use DateTimeImmutable;
 use App\Form\MangasType;
 use App\Form\AuteursType;
+use App\Entity\Commentaires;
+use App\Form\CommentaireType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class MangasController extends AbstractController
 {
@@ -213,11 +217,42 @@ class MangasController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{id}', name: 'show_manga')]
-    public function showManga(Mangas $manga, Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/show/{id}', name: 'app_show_manga')]
+    public function showManga(Mangas $manga, Request $request, ManagerRegistry $doctrine, UserInterface $user): Response
     {
+        $form = $this->createForm(CommentaireType::class);
+        $commentaire = new Commentaires;
+        $mangaId = $manga->getId();
+        $commentaires = $doctrine->getRepository(Commentaires::class)->findBy(['manga_id' => $mangaId]);
+
+        $datetime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $manager = $doctrine->getManager();
+
+            $data = $form->getData();
+
+            $commentaire->setContenu($data->getContenu());
+            $commentaire->setNote($data->getNote());
+            $commentaire->setAuteurId($user);
+            $commentaire->setMangaId($manga);
+            $commentaire->setCreatedAt($datetime);
+            $commentaire->setUpdatedAt($datetime);
+            
+            $manager->persist($commentaire);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_show_manga');
+        }
+
         return $this->render('mangas/show_manga.html.twig', [
             'manga' => $manga,
+            'form' => $form->createView(),
+            'commentaires' => $commentaires,
+            'user' => $user,
         ]);
     }
 }

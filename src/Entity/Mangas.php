@@ -28,7 +28,7 @@ class Mangas
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $statut = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1024)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

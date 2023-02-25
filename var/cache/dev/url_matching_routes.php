@@ -58,7 +58,7 @@ return [
         216 => [[['_route' => 'app_edit_mangas', '_controller' => 'App\\Controller\\MangasController::editManga'], ['id'], null, null, false, true, null]],
         239 => [[['_route' => 'app_edit_auteurs', '_controller' => 'App\\Controller\\MangasController::editAuteur'], ['id'], null, null, false, true, null]],
         262 => [
-            [['_route' => 'show_manga', '_controller' => 'App\\Controller\\MangasController::showManga'], ['id'], null, null, false, true, null],
+            [['_route' => 'app_show_manga', '_controller' => 'App\\Controller\\MangasController::showManga'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

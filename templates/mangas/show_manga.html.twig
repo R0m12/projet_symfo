@@ -39,6 +39,11 @@
         height: 10rem;
     }
 
+    .btn-success {
+        position: absolute;
+        right: 25px;
+    }
+
     .title {
         font-family: 'Righteous';
     }
@@ -59,6 +64,7 @@
 
     .text-muted {
         font-family: 'Macondo';
+        font-size: 18px;
     }
 
     .information {
@@ -77,19 +83,38 @@
     .reviews {
         margin-top: 2.5rem;
         padding-left: 2.5rem;
+        padding-right: 2.5rem;
         background-color: white;
         min-height: 100%;
     }
 
-    .reviews h4 {
+    .title {
         padding-top: 1rem;
         font-family: 'Righteous';
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .mail {
+        font-family: 'Poiret One';
+    }
+
+    .date {
+        text-align: right;
+        font-family: 'Macondo';
+    }
+
+    .note{
+        font-family: 'Poiret One';
+        font-weight: bold;
     }
 
 </style>
 
 <nav class="navbar navbar-light bg-dark">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{path('app_mangas')}}">
         <img src="{{asset('image.png')}}" width="120" height="30" alt="">
     </a>
     <a class="navbar-logout" href="{{path('app_logout')}}"> 
@@ -99,12 +124,12 @@
 
 <img src="{{asset('uploads/images/'~manga.image)}}" class="illu"/>
 <div class="bg-white">
-    <h2 class="title"> {{manga.nom}} </h2>
+    <h2 class="title"> {{manga.nom}} <span> <a href="{{path('app_edit_mangas', {'id': manga.id})}}"><button class="btn btn-success" type="button"> <i class="fa-solid fa-pen-to-square"></i> </button> </a> </span> </h2>
     <p class="lead"> {{manga.auteur_id.nom}} {{manga.auteur_id.prenom}} </p>
 </div>
 <div class="content">
     <h4> Description: </h4>
-    <p class="text-muted"> {{manga.description}}. </p>
+    <p class="text-muted"> {{manga.description}} </p>
     <hr>
     <div class="information"> 
         <div class="genre">
@@ -134,7 +159,44 @@
 </div>
 
 <div class="reviews">
-    <h4> Reviews </h4>
+    <h4 class="title"> Reviews </h4>
+    <hr>
+    {% for commentaire in commentaires %}
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="mail"> {{user.email}} </h4>
+            </div>
+            <div class="col-md-6">
+                <p class="date"> {{commentaire.createdAt|date('d/m/Y')}} </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="text-muted"> {{commentaire.contenu}} </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <p class="note"> {{commentaire.note}}/5 </p>
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+    <h4 class="title"> Laisser une review </h4>
+    <div class="form">
+        {{form_start(form)}}
+        <div class="row">
+            <div class="col">
+                {{form_row(form.contenu)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{form_row(form.note)}}
+            </div>
+        </div>
+        {{form_end(form)}}
+    </div>
 </div>
 
 {% endblock %}

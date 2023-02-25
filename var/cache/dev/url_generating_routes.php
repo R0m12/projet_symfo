@@ -22,7 +22,7 @@ return [
     'app_create_auteurs' => [[], ['_controller' => 'App\\Controller\\MangasController::createAuteur'], [], [['text', '/create_auteurs']], [], [], []],
     'app_edit_mangas' => [['id'], ['_controller' => 'App\\Controller\\MangasController::editManga'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/edit_manga']], [], [], []],
     'app_edit_auteurs' => [['id'], ['_controller' => 'App\\Controller\\MangasController::editAuteur'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/edit_auteur']], [], [], []],
-    'show_manga' => [['id'], ['_controller' => 'App\\Controller\\MangasController::showManga'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/show']], [], [], []],
+    'app_show_manga' => [['id'], ['_controller' => 'App\\Controller\\MangasController::showManga'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/show']], [], [], []],
     'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
     'app_login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], [], []],

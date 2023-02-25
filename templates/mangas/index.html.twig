@@ -4,14 +4,28 @@
 
 {% block body %}
 <style>
-
-    nav {
-        display: flex;
-        justify-content: space-between;
-    }
-
     .navbar-brand {
         margin-left: 25px;
+    }
+
+    .add-manga {
+        color: white;
+        text-decoration: none;
+        font-family: 'Macondo';
+        position: absolute;
+        font-weight: bold;
+        left: 500px;
+        top: 17px;
+    }
+
+    .add-auteur {
+        color: white;
+        text-decoration: none;
+        font-family: 'Macondo';
+        position: absolute;
+        font-weight: bold;
+        left: 1000px;
+        top: 17px;
     }
 
     .navbar-logout {
@@ -36,7 +50,7 @@
     }
 
     .card {
-        width: 16rem;
+        width: 18rem;
         height: 24rem;
         display: flex;
         justify-content: center;
@@ -44,7 +58,7 @@
     }
 
     .card-img-top { 
-        height: 14rem;
+        height: 16rem;
         width: 100%;
     }
 
@@ -56,12 +70,25 @@
         font-style: italic;
         text-align: center;
         font-family: 'Poiret One';
+        text-decoration: underline;
+    }
+
+    .container a {
+        text-decoration: none;
+        color: black;
+        width: 100%;
     }
 </style>
 
 <nav class="navbar navbar-light bg-dark">
     <a class="navbar-brand" href="#">
         <img src="{{asset('image.png')}}" width="120" height="30" alt="">
+    </a>
+    <a class="add-manga" href="{{path('app_create_mangas')}}">
+        <p> Ajouter un manga </p>
+    </a>
+    <a class="add-auteur" href="{{path('app_create_auteurs')}}">
+        <p> Ajouter un auteur </p>
     </a>
     <a class="navbar-logout" href="{{path('app_logout')}}"> 
         <button class="btn btn-secondary btn-sm" type="button"> Se déconnecter </button> 
@@ -72,13 +99,13 @@
     <div class="container">
         {% for manga in mangas %}
             <div class="card">
-                <img src="{{asset('uploads/images/'~manga.image)}}" class="card-img-top"/>
+                <a href="{{path('app_show_manga', {'id':  manga.id})}}"> <img src="{{asset('uploads/images/'~manga.image)}}" class="card-img-top"/> </a>
                 <div class="card-body">
-                    <h3 class="card-title"> {{manga.nom}} </h5>
-                    <h5 class="card-body"> {{manga.auteur_id.nom}} {{manga.auteur_id.prenom}} </h5>
+                    <h3 class="card-title"> <a href="{{path('app_show_manga', {'id':  manga.id})}}"> {{manga.nom}} </a> </h5>
+                    <h5 class="card-body"> <a href="{{path('app_edit_auteurs', {'id':  manga.auteur_id.id})}}"> {{manga.auteur_id.nom}} {{manga.auteur_id.prenom}} </a> </h5>
                 </div>
             </div>
         {% endfor %}
-    </div>      
+    </div>
 </body>
 {% endblock %}
