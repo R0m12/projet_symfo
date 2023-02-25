@@ -75,6 +75,7 @@
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
     <parameter key="brochures_directory">C:\Users\romai\Desktop\projet_symfo/public/uploads/images</parameter>
+    <parameter key="brochures_directory">C:\Users\romai\Desktop\projet_symfo/public/uploads/images</parameter>
     <parameter key="event_dispatcher.event_aliases" type="collection">
       <parameter key="Symfony\Component\Console\Event\ConsoleCommandEvent">console.command</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
@@ -6531,6 +6532,7 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\MangasController::createAuteur" type="service_closure" id=".service_locator.GQZbvNR"/>
+        <argument key="App\Controller\MangasController::createManga" type="service_closure" id=".service_locator.aUsFPsv"/>
         <argument key="App\Controller\MangasController::createManga" type="service_closure" id=".service_locator.aUsFPsv"/>
         <argument key="App\Controller\MangasController::editAuteur" type="service_closure" id=".service_locator.y6TXluv"/>
         <argument key="App\Controller\MangasController::editManga" type="service_closure" id=".service_locator.pmIQPPt"/>
