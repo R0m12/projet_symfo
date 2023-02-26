@@ -1,6 +1,6 @@
 Projet Symfony - EVRARD Romain / LANERES Esteban
 
-Pour rappel, le cahier des charges exigait :
+Pour rappel, le cahier des charges exigeait :
   - Minimum 2 controllers.
   - Utilisation du security-bundle pour le système d’authentification (login, signup, logout).
   - Utilisation d'une base de données avec l'ORM Doctrine (stockage des tweets en base).
@@ -18,7 +18,7 @@ Pour rappel, le cahier des charges exigait :
   
  Fonctionnalités :
   - Login et Register.
-  - Page d'acceuil bloqué par authentification.
+  - Page d'accueil bloquée par authentification.
   - Gestion d'erreurs des connexions.
   - Création et édition de mangas.
   - Création et édition d'auteurs.
@@ -34,7 +34,7 @@ Pour rappel, le cahier des charges exigait :
   
 Instructions pour le démarrage de l'application :
   - Faire un 'composer update'.
-  - Dans le dossier migrations, si un fichier existe, le supprimer.
+  - Dans le dossier 'migrations', si un fichier existe, le supprimer.
   - Faire les migrations : 'php bin/console make:migration' puis 'php bin/console d:m:m'.
   - Lancer le serveur : 'symfony server:start'.
   - Une fois la page web ouverte, ajouter à l'url '/mangas' ou '/login' pour arriver à la page de connexion.
